@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SampleController {
        @GetMapping("Hello/{name}/{times}")
     public String sayHello(@PathVariable String name,@PathVariable("times") int times) {
-           String output="";
+           StringBuilder output= new StringBuilder();
            for (int i = 0; i < times; i++) {
-               output += "Hello " + name + "!\n";
+               output.append("Hello ").append(name).append("!\n");
            }
-    return output;
+    return output.toString();
     }
     @GetMapping("Bye")
     public String sayBye() {
