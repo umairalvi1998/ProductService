@@ -9,4 +9,6 @@ fetch products. Hence we have made an interface so that different classes can im
 public interface ProductService {
     Product getSingleProduct(long productId);
     List<Product> getAllProducts();
+    Product updateProduct(Long id,Product product);
+    Product replaceProduct(Product product);
 }
