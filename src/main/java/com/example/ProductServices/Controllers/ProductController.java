@@ -26,8 +26,9 @@ public class ProductController {
             return productService.getSingleProduct(id);
       }
 
+      @GetMapping() //we want the ApI to be like /products hence no parameters
       public List<Product> getAllProducts() {
-            return new ArrayList<Product>();
+            return productService.getAllProducts();
       }
       
 
