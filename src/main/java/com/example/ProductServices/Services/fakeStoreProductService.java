@@ -88,5 +88,10 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
        return convertFakeStoreProductDto(response);
    }
 
+    public Product replaceProduct(Product product) {
+       return null;
+    }
+
+
 
 }
