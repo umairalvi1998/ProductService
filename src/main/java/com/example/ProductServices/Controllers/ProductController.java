@@ -27,7 +27,15 @@ public class ProductController {
 After the constructor executes, response becomes an instance of ResponseEntity<Product>.
 This object encapsulates both the Product object returned by productService.getSingleProduct(id) and the HTTP status 200 OK.*/
 
-            ResponseEntity<Product> response = new ResponseEntity<>(productService.getSingleProduct(id), HttpStatus.OK);
+            ResponseEntity<Product> response=null;
+
+            try {
+                  Product p = productService.getSingleProduct(id);
+                  response = new ResponseEntity<>(p,HttpStatus.OK);
+            }
+            catch(RuntimeException e) {
+             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             return response;
       }
 
