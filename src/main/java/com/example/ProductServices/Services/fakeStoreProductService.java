@@ -82,13 +82,42 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
    @Override
     public Product updateProduct(Long id, Product product) {
        //PUT
+       /*
+       Return a RequestCallback implementation that:
+        Sets the request Accept header based on the given response type, cross-checked against the configured message converters.
+        Writes the given object to the request stream.
+       requestBody: This parameter is of type Object and is nullable (@Nullable). It likely represents the data that will be sent as part of the HTTP request body.
+       responseType: This parameter is of type Type and probably specifies the expected type of the response that the client expects to receive.
+
+        */
        RequestCallback requestCallback = restTemplate.httpEntityCallback(product, fakeStoreProductDTO.class);
        HttpMessageConverterExtractor<fakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor(fakeStoreProductDTO.class, restTemplate.getMessageConverters());
+       /*@Nullable
+       public <T> T execute(URI url,
+               HttpMethod method,
+               @Nullable
+                       RequestCallback requestCallback,
+               @Nullable
+                       ResponseExtractor<T> responseExtractor)
+              throws RestClientException
+       Execute the HTTP method to the given URL, preparing the request with the RequestCallback, and reading the response with a ResponseExtractor.
+               Parameters:
+        url - the URL
+        method - the HTTP method (GET, POST, etc)
+        requestCallback - object that prepares the request
+        responseExtractor - object that extracts the return value from the response
+
+        Returns: an arbitrary object, as returned by the ResponseExtractor
+        */
        fakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.PATCH, requestCallback, responseExtractor);
        return convertFakeStoreProductDto(response);
    }
 
-    public Product replaceProduct(Product product) {
+    public Product replaceProduct(Long id,Product product) {
+       return null;
+    }
+
+    public Product deleteProduct(Long id) {
        return null;
     }
 
