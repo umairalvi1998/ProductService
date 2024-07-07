@@ -1,6 +1,7 @@
 package com.example.ProductServices.Services;
 
 import com.example.ProductServices.DTO.fakeStoreProductDTO;
+import com.example.ProductServices.Exceptions.ProductNotFoundException;
 import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import org.springframework.http.HttpMethod;
@@ -29,6 +30,9 @@ public class fakeStoreProductService implements ProductService {
        * Because we are fetching the product details from outside and those details might not be
        * compatible with my Product details. Hence we created a DTO . Now we need to convert the
        * DTO to our product.  */
+        if(DTOobj == null) {
+            throw new ProductNotFoundException("Product not found with ID "+productId);
+        }
         return  convertFakeStoreProductDto(DTOobj);
 
     }
