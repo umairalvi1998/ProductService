@@ -46,13 +46,15 @@ This object encapsulates both the Product object returned by productService.getS
       public List<Product> getAllProducts() {
             return productService.getAllProducts();
       }
-      
-      public void delteteProduct() {
 
+
+      @DeleteMapping("/{id}")
+      public Product delteteProduct(@PathVariable("id") Long id) {
+           return  productService.deleteProduct(id);
       }
       @PutMapping("/{id}")
       public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product) {
-            return null;
+            return  productService.replaceProduct(id,product);
 
       }
 

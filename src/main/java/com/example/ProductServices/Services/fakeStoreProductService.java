@@ -78,7 +78,7 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
 
         List<Product> products = new ArrayList<>();
         for(fakeStoreProductDTO FakeStoreProductDTO : fakeStoreProductDTOS) {
-         products.add(convertFakeStoreProductDto(FakeStoreProductDTO));;
+         products.add(convertFakeStoreProductDto(FakeStoreProductDTO));
         }
         return products;
    }
@@ -116,14 +116,26 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
        fakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.PATCH, requestCallback, responseExtractor);
        return convertFakeStoreProductDto(response);
    }
-
+    @Override
     public Product replaceProduct(Long id,Product product) {
-       return null;
+        RequestCallback requestCallback =restTemplate.httpEntityCallback(product,fakeStoreProductDTO.class);
+        HttpMessageConverterExtractor<fakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor(fakeStoreProductDTO.class, restTemplate.getMessageConverters());
+        fakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.PUT, requestCallback, responseExtractor);
+        if(response == null) {
+            throw new ProductNotFoundException("Product not found with ID "+id);
+        }
+        return convertFakeStoreProductDto(response);
     }
-
+     @Override
     public Product deleteProduct(Long id) {
-       return null;
-    }
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(null,fakeStoreProductDTO.class);
+        HttpMessageConverterExtractor<fakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor(fakeStoreProductDTO.class, restTemplate.getMessageConverters());
+        fakeStoreProductDTO response =  restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.DELETE, requestCallback, responseExtractor);
+        if(response == null) {
+            throw new ProductNotFoundException("Product not found with ID "+id);
+        }
+        return convertFakeStoreProductDto(response);
+   }
 
 
 
