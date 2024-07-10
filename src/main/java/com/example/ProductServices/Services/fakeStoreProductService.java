@@ -5,6 +5,7 @@ import com.example.ProductServices.Exceptions.ProductNotFoundException;
 import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
@@ -94,7 +95,16 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
        responseType: This parameter is of type Type and probably specifies the expected type of the response that the client expects to receive.
 
         */
-       RequestCallback requestCallback = restTemplate.httpEntityCallback(product, fakeStoreProductDTO.class);
+       fakeStoreProductDTO prod = new fakeStoreProductDTO();
+       prod.setId(product.getId());
+       prod.setTitle(product.getTitle());
+       prod.setPrice(product.getPrice());
+       prod.setCategory(product.getCategory().getName());
+       prod.setDescription(product.getCategory().getDescription());
+
+       RequestCallback requestCallback =restTemplate.httpEntityCallback(prod,fakeStoreProductDTO.class);
+       HttpComponentsClientHttpRequestFactory requestFactory =  new HttpComponentsClientHttpRequestFactory();
+       restTemplate.setRequestFactory(requestFactory);
        HttpMessageConverterExtractor<fakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor(fakeStoreProductDTO.class, restTemplate.getMessageConverters());
        /*@Nullable
        public <T> T execute(URI url,
@@ -118,7 +128,18 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
    }
     @Override
     public Product replaceProduct(Long id,Product product) {
-        RequestCallback requestCallback =restTemplate.httpEntityCallback(product,fakeStoreProductDTO.class);
+       /* When we are passing the product as request body the issue which is arising is that, fakeStore.com is not able to
+       convert our product object into their product object. Specifically it is not able deserialize the Category object
+       to String.
+       That is why we need to convert our product object to fakeStoreDTO.
+        */
+        fakeStoreProductDTO prod = new fakeStoreProductDTO();
+        prod.setId(product.getId());
+        prod.setTitle(product.getTitle());
+        prod.setPrice(product.getPrice());
+        prod.setCategory(product.getCategory().getName());
+        prod.setDescription(product.getCategory().getDescription());
+        RequestCallback requestCallback =restTemplate.httpEntityCallback(prod,fakeStoreProductDTO.class);
         HttpMessageConverterExtractor<fakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor(fakeStoreProductDTO.class, restTemplate.getMessageConverters());
         fakeStoreProductDTO response = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.PUT, requestCallback, responseExtractor);
         if(response == null) {
