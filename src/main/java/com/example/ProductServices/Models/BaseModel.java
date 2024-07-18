@@ -13,7 +13,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class BaseModel {
  @Id
  @GeneratedValue(strategy = IDENTITY)
- protected long id;
+ protected  Long id;
  protected  Date createdAt;
  protected Date updatedAt;
 }

@@ -2,6 +2,8 @@ package com.example.ProductServices.Controllers;
 
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-
+      @Autowired
+      @Qualifier("selfProductService")
       private ProductService productService;
 
-      public ProductController(ProductService productService) {
+      public ProductController(@Qualifier("selfProductService") ProductService productService) {
             this.productService = productService;
       }
 
@@ -49,8 +52,8 @@ This object encapsulates both the Product object returned by productService.getS
 
 
       @DeleteMapping("/{id}")
-      public Product delteteProduct(@PathVariable("id") Long id) {
-           return  productService.deleteProduct(id);
+      public Product  delteteProduct(@PathVariable("id") Long id) {
+             return  productService.deleteProduct(id);
       }
       @PutMapping("/{id}")
       public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product) {
@@ -63,4 +66,8 @@ This object encapsulates both the Product object returned by productService.getS
             return productService.updateProduct(id,product);
       }
 
+      @PostMapping()
+      public Product addProduct(@RequestBody Product product) {
+            return productService.addProduct(product);
+      }
 }
