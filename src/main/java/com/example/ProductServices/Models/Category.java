@@ -10,8 +10,11 @@ import java.net.HttpURLConnection;
 @Setter
 @Entity
 public class Category extends BaseModel {
-String name;
-String description;
+    String name;
+    String description;
 
+    public  Long getId() {
+        return id;
+    }
 
 }

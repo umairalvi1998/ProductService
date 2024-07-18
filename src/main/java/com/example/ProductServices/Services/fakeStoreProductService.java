@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Service
+@Service("fakeStoreProductService")
 public class fakeStoreProductService implements ProductService {
    private RestTemplate restTemplate;
 
@@ -158,6 +158,10 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
         return convertFakeStoreProductDto(response);
    }
 
+    @Override
+    public Product addProduct(Product product) {
+        return null;
+    }
 
 
 }
