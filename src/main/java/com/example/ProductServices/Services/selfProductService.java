@@ -31,6 +31,7 @@ public class selfProductService implements ProductService {
     @Override
     public List<Product> getAllProducts() {
          return  productRepository.findAll();
+
     }
 
     @Override
@@ -39,12 +40,57 @@ public class selfProductService implements ProductService {
        if(prod.isEmpty()){
            throw new ProductNotFoundException("Product not found");
        }
+      Product productInDb = prod.get();
 
+       if(product.getTitle() != null) {
+           productInDb.setTitle(product.getTitle());
+       }
+       if(product.getPrice() != null )
+       {
+           productInDb.setPrice(product.getPrice());
+       }
+       if(product.getCategory() != null) {
+           Optional<Category> cat = categoryRepository.findById(product.getCategory().getId());
+           if(cat.isEmpty())
+           {
+               Category newCategory = product.getCategory();
+               categoryRepository.save(newCategory);
+               productInDb.setCategory(newCategory);
+           }
+
+       }
+       return productRepository.save(productInDb);
     }
 
     @Override
     public Product replaceProduct(Long id, Product product) {
-        return null;
+        //this is  a PUT call.
+        Optional<Product> prod = productRepository.findById(id);
+        if(prod.isEmpty()){
+            throw new ProductNotFoundException("Product not found, Cant't replace the product which does not exists");
+        }
+
+        Product productInDb = prod.get();
+
+        if(product.getTitle() != null) {
+            productInDb.setTitle(product.getTitle());
+        }
+        if(product.getPrice() != null )
+        {
+            productInDb.setPrice(product.getPrice());
+        }
+        if(product.getCategory() != null) {
+            Optional<Category> cat = categoryRepository.findById(product.getCategory().getId());
+            if(cat.isEmpty())
+            {
+                Category newCategory = product.getCategory();
+                categoryRepository.save(newCategory);
+                productInDb.setCategory(newCategory);
+            }
+
+        }
+        return productRepository.save(productInDb);
+
     }
 
     @Override
