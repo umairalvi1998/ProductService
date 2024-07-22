@@ -1,7 +1,10 @@
 package com.example.ProductServices.Repository;
 
 import com.example.ProductServices.Models.Product;
+import com.example.ProductServices.Projections.ProductWithIdAndTitle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,5 +20,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     void deleteById(Long aLong);
 
     Product save(Product product);
+
+    @Query("SELECT p.id as id,p.title as title FROM Product p")
+    List<ProductWithIdAndTitle>  findIdAndTitle();
 
 }
