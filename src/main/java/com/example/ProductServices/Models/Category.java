@@ -1,4 +1,5 @@
 package com.example.ProductServices.Models;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToMany;
@@ -14,7 +15,7 @@ import java.util.List;
 public class Category extends BaseModel {
     String name;
     String description;
-    @OneToMany(/*mappedBy = "category"*/)
+    @OneToMany(mappedBy = "category")
     List<Product> products;
     public  Long getId() {
         return id;

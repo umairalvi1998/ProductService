@@ -1,4 +1,5 @@
 package com.example.ProductServices.Models;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Entity
 public class Product extends BaseModel {
   private String title;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private Category category;
   private Double price;
 
