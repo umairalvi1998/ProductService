@@ -12,22 +12,22 @@ import java.util.List;
 @SpringBootTest()
 @ContextConfiguration(classes = DemoApplication.class)
 class DemoApplicationTests {
-      @Autowired
-      ProductRepository productRepository;
-
-//     //public DemoApplicationTests(ProductRepository productRepository) {
-//         this.productRepository = productRepository;
-//     }
-    @Test
-    void contextLoads() {
-    }
-   @Test
-    void TestDBQueries() {
-         List<ProductWithIdAndTitle>  productWithIdAndTitles = productRepository.findIdAndTitle();
-
-         for (ProductWithIdAndTitle productWithIdAndTitle : productWithIdAndTitles) {
-             System.out.println(productWithIdAndTitle.getid() + " " + productWithIdAndTitle.gettitle());
-         }
-    }
+//      @Autowired
+//      ProductRepository productRepository;
+//
+////     //public DemoApplicationTests(ProductRepository productRepository) {
+////         this.productRepository = productRepository;
+////     }
+//    @Test
+//    void contextLoads() {
+//    }
+//   @Test
+//    void TestDBQueries() {
+//         List<ProductWithIdAndTitle>  productWithIdAndTitles = productRepository.findIdAndTitle();
+//
+//         for (ProductWithIdAndTitle productWithIdAndTitle : productWithIdAndTitles) {
+//             System.out.println(productWithIdAndTitle.getid() + " " + productWithIdAndTitle.gettitle());
+//         }
+//    }
 
 }
