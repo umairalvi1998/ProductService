@@ -5,9 +5,10 @@ import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Repository.CategoryRepository;
 import com.example.ProductServices.Repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service("selfProductService")
@@ -29,8 +30,8 @@ public class selfProductService implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-         return  productRepository.findAll();
+    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+         return productRepository.findAll(Pageable.ofSize(pageNumber));
 
     }
 
