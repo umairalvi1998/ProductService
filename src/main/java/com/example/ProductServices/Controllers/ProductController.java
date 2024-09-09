@@ -4,6 +4,7 @@ import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +47,8 @@ This object encapsulates both the Product object returned by productService.getS
       }
 
       @GetMapping() //we want the ApI to be like /products hence no parameters
-      public List<Product> getAllProducts() {
-            return productService.getAllProducts();
+      public Page<Product> getAllProducts(@RequestParam("pageNumber") int pageNumber,@RequestParam("pageSize") int pageSize) {
+            return productService.getAllProducts(pageNumber,pageSize);
       }
 
 

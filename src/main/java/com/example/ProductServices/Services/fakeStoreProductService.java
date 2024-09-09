@@ -4,6 +4,8 @@ import com.example.ProductServices.DTO.fakeStoreProductDTO;
 import com.example.ProductServices.Exceptions.ProductNotFoundException;
 import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -56,7 +58,7 @@ public class fakeStoreProductService implements ProductService {
         return product;
 
     }
-    public List<Product> getAllProducts() {
+    public Page<Product> getAllProducts(int pageNumber, int pagesize) {
        fakeStoreProductDTO[]  fakeStoreProductDTOS= restTemplate.getForObject("https://fakestoreapi.com/products",fakeStoreProductDTO[].class);
        /*  The reason why restTemplate.getForObject("https://fakestoreapi.com/products", fakeStoreProductDTO[].class) does not give you an error lies in how Java handles arrays compared to generic types (like List<fakeStoreProductDTO>).
 
@@ -81,7 +83,7 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
         for(fakeStoreProductDTO FakeStoreProductDTO : fakeStoreProductDTOS) {
          products.add(convertFakeStoreProductDto(FakeStoreProductDTO));
         }
-        return products;
+        return new PageImpl<>(products);
    }
 
    @Override
