@@ -47,8 +47,13 @@ This object encapsulates both the Product object returned by productService.getS
       }
 
       @GetMapping() //we want the ApI to be like /products hence no parameters
-      public Page<Product> getAllProducts(@RequestParam("pageNumber") int pageNumber,@RequestParam("pageSize") int pageSize) {
-            return productService.getAllProducts(pageNumber,pageSize);
+      public List<Product> getAllProducts(@RequestParam("pageNumber") int pageNumber,@RequestParam("pageSize") int pageSize) {
+            Page<Product> productPages =productService.getAllProducts(pageNumber,pageSize);
+              List<Product> products = new ArrayList<>();
+              for (Product product : productPages) {
+                    products.add(product);
+              }
+              return products;
       }
 
 

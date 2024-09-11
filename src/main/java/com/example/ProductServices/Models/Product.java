@@ -1,8 +1,6 @@
 package com.example.ProductServices.Models;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +9,8 @@ import lombok.Setter;
 @Entity
 public class Product extends BaseModel {
     private String title;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @JsonBackReference
     private Category category;
     private Double price;
 
