@@ -6,6 +6,7 @@ import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,28 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service("fakeStoreProductService")
 public class fakeStoreProductService implements ProductService {
    private RestTemplate restTemplate;
+   private RedisTemplate<String, Object> redisTemplate;
 
-   fakeStoreProductService(RestTemplate restTemplate) {
+   fakeStoreProductService(RestTemplate restTemplate, RedisTemplate<String, Object> redisTemplate) {
 
        this.restTemplate = restTemplate;
+       this.redisTemplate = redisTemplate;
    }
 
     public Product getSingleProduct(long productId) {
+       //try to fetch the product from redis
+        Product p =  (Product) redisTemplate.opsForHash().get("PRODUCTS","PRODUCT_"+productId);
+
+        if(p!=null) {
+            return p; //cache hit
+        }
+        //else cache miss
        //call fakestore to fetch the product with the given id. => make HTTP call
        fakeStoreProductDTO DTOobj = restTemplate.getForObject("https://fakestoreapi.com/products/" + productId, fakeStoreProductDTO.class);
        /*We need to convert our fakeStoreProductDTO into the format of our Product class.
@@ -36,8 +47,9 @@ public class fakeStoreProductService implements ProductService {
         if(DTOobj == null) {
             throw new ProductNotFoundException("Product not found with ID "+productId);
         }
-        return  convertFakeStoreProductDto(DTOobj);
-
+        p =  convertFakeStoreProductDto(DTOobj);
+        redisTemplate.opsForHash().put("PRODUCTS","PRODUCT_"+productId,p);
+        return p;
     }
 
     public Product convertFakeStoreProductDto(fakeStoreProductDTO DTOobj) {

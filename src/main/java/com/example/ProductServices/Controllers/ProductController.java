@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
       @Autowired
-      @Qualifier("selfProductService")
+      @Qualifier("fakeStoreProductService")
       private ProductService productService;
 
       public ProductController(@Qualifier("selfProductService") ProductService productService) {

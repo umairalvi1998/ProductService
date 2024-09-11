@@ -5,12 +5,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @MappedSuperclass
-public class BaseModel {
+public class BaseModel implements Serializable {
  @Id
  @GeneratedValue(strategy = IDENTITY)
  protected  Long id;
