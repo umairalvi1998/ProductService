@@ -1,5 +1,6 @@
 package com.example.ProductServices.Controllers;
 
+import com.example.ProductServices.DTO.ProductDto;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +73,8 @@ This object encapsulates both the Product object returned by productService.getS
             return productService.updateProduct(id,product);
       }
 
-      @PostMapping()
-      public Product addProduct(@RequestBody Product product) {
-            return productService.addProduct(product);
+      @PostMapping("/categories/{categoryId}/product")
+      public ResponseEntity<ProductDto>  addProduct(@RequestBody Product product, @PathVariable("categoryId") long categoryId) {
+            return productService.addProduct(product,categoryId);
       }
 }

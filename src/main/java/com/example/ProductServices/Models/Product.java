@@ -13,6 +13,9 @@ public class Product extends BaseModel {
     @JsonBackReference
     private Category category;
     private Double price;
+    private Double specialPrice;
+    private String description;
+    private Integer quantity;
 
     public void setId(Long id) {
         this.id = id;
