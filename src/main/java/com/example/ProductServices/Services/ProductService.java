@@ -1,5 +1,6 @@
 package com.example.ProductServices.Services;
 
+import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Models.Product;
 import org.springframework.data.domain.Page;
 
@@ -12,6 +13,6 @@ public interface ProductService {
     Product updateProduct(Long id,Product product);
     Product replaceProduct(Long id, Product product);
     Product deleteProduct(Long id);
-    Product addProduct(Product product);
+    Product addProduct(Product product, long categoryId) throws ResourceNotFoundException;
 
 }

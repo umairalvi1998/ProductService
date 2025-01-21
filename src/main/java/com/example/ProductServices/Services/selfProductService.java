@@ -1,10 +1,12 @@
 package com.example.ProductServices.Services;
 
 import com.example.ProductServices.Exceptions.ProductNotFoundException;
+import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Repository.CategoryRepository;
 import com.example.ProductServices.Repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +17,14 @@ import java.util.Optional;
 
 @Service("selfProductService")
 public class selfProductService implements ProductService {
-     ProductRepository productRepository;
-     CategoryRepository categoryRepository;
-     public selfProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+     private ProductRepository productRepository;
+     private CategoryRepository categoryRepository;
+     private ModelMapper modelMapper;
+
+     public selfProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
          this.productRepository = productRepository;
          this.categoryRepository = categoryRepository;
+            this.modelMapper = modelMapper;
      }
     @Override
     public Product getSingleProduct(long productId) {
@@ -105,14 +110,21 @@ public class selfProductService implements ProductService {
     }
 
     @Override
-    public Product addProduct(Product product) {
-         Category category = product.getCategory();
+    public Product addProduct(Product product,long categoryId) throws ResourceNotFoundException {
+//         Category category = product.getCategory();
 
 //         if(category.getId()==null) {
 //             //we need to create a new category object in the DB
 //             category = categoryRepository.save(category);
 //             product.setCategory(category);
 //         }
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category","CategoryId",categoryId));
+
+        product.setCategory(category);
+        product.setImage("default.jpg");
+        double specialPrice = product.getPrice() - (product.getDiscount() * 0.01)*product.getPrice();
+        product.setSpecialPrice(specialPrice);
 
         return productRepository.save(product);
     }

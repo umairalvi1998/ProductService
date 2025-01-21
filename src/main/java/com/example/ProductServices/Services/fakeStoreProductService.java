@@ -2,6 +2,7 @@ package com.example.ProductServices.Services;
 
 import com.example.ProductServices.DTO.fakeStoreProductDTO;
 import com.example.ProductServices.Exceptions.ProductNotFoundException;
+import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service("fakeStoreProductService")
@@ -173,7 +173,7 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
    }
 
     @Override
-    public Product addProduct(Product product) {
+    public Product addProduct(Product product, long categoryId) throws ResourceNotFoundException {
         return null;
     }
 

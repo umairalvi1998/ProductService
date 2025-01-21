@@ -1,8 +1,10 @@
 package com.example.ProductServices.Controllers;
 
 import com.example.ProductServices.DTO.ProductDto;
+import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Services.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -17,12 +19,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-      @Autowired
-      @Qualifier("fakeStoreProductService")
+
       private ProductService productService;
 
-      public ProductController(@Qualifier("selfProductService") ProductService productService) {
+      private ModelMapper modelMapper;
+
+      public ProductController(@Qualifier("selfProductService") ProductService productService, ModelMapper modelMapper) {
             this.productService = productService;
+            this.modelMapper = modelMapper;
       }
 
       @GetMapping("/{id}")
@@ -74,7 +78,11 @@ This object encapsulates both the Product object returned by productService.getS
       }
 
       @PostMapping("/categories/{categoryId}/product")
-      public ResponseEntity<ProductDto>  addProduct(@RequestBody Product product, @PathVariable("categoryId") long categoryId) {
-            return productService.addProduct(product,categoryId);
+      public ResponseEntity<ProductDto>  addProduct(@RequestBody Product product, @PathVariable("categoryId") long categoryId) throws ResourceNotFoundException {
+
+            Product prod = productService.addProduct(product,categoryId);
+            ProductDto productDto = modelMapper.map(prod,ProductDto.class);
+
+            return new ResponseEntity<>(productDto,HttpStatus.CREATED);
       }
 }

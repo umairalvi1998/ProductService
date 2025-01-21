@@ -9,10 +9,12 @@ import lombok.Setter;
 @Entity
 public class Product extends BaseModel {
     private String title;
+    private String image;
     @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JsonBackReference
     private Category category;
     private Double price;
+    private Double discount;
     private Double specialPrice;
     private String description;
     private Integer quantity;
