@@ -58,6 +58,16 @@ public class selfProductService implements ProductService {
        {
            productInDb.setPrice(product.getPrice());
        }
+       if(product.getDiscount() != null) {
+           productInDb.setDiscount(product.getDiscount());
+           productInDb.setSpecialPrice(product.getPrice() - (product.getDiscount() * 0.01)*product.getPrice());
+       }
+       if(product.getDescription() != null) {
+           productInDb.setDescription(product.getDescription());
+       }
+       if(product.getQuantity() != null) {
+            productInDb.setQuantity(product.getQuantity());
+       }
        if(product.getCategory() != null) {
            Optional<Category> cat = categoryRepository.findById(product.getCategory().getId());
            if(cat.isEmpty())
@@ -103,9 +113,12 @@ public class selfProductService implements ProductService {
     }
 
     @Override
-    public Product deleteProduct(Long id) {
-        productRepository.deleteById(id);
-        return  null;
+    public void deleteProduct(Long id) {
+        int rowsAffected = productRepository.deleteProductById(id);
+
+        if (rowsAffected == 0) {
+            throw new ProductNotFoundException("Product not found with ID: " + id);
+        }
     }
 
     @Override

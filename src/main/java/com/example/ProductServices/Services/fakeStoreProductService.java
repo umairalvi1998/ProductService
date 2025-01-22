@@ -162,7 +162,7 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
         return convertFakeStoreProductDto(response);
     }
      @Override
-    public Product deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         RequestCallback requestCallback = restTemplate.httpEntityCallback(null,fakeStoreProductDTO.class);
         HttpMessageConverterExtractor<fakeStoreProductDTO> responseExtractor = new HttpMessageConverterExtractor(fakeStoreProductDTO.class, restTemplate.getMessageConverters());
         fakeStoreProductDTO response =  restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.DELETE, requestCallback, responseExtractor);

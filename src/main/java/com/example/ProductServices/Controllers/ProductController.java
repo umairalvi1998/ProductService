@@ -73,8 +73,8 @@ This object encapsulates both the Product object returned by productService.getS
 
 
       @DeleteMapping("/{id}")
-      public Product  delteteProduct(@PathVariable("id") Long id) {
-             return  productService.deleteProduct(id);
+      public void  delteteProduct(@PathVariable("id") Long id) {
+               productService.deleteProduct(id);
       }
 
       @PutMapping("/{id}")
@@ -84,8 +84,10 @@ This object encapsulates both the Product object returned by productService.getS
       }
 
       @PatchMapping("/{id}")
-      public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-            return productService.updateProduct(id,product);
+      public ProductDto updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+           Product product1 =  productService.updateProduct(id,product);
+           ProductDto productDto = modelMapper.map(product1,ProductDto.class);
+           return productDto;
       }
 
       @PostMapping("/categories/{categoryId}/product")

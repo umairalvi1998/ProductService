@@ -12,7 +12,7 @@ public interface ProductService {
     Page<Product> getAllProducts(int pageNo, int pageSize);
     Product updateProduct(Long id,Product product);
     Product replaceProduct(Long id, Product product);
-    Product deleteProduct(Long id);
+    void deleteProduct(Long id);
     Product addProduct(Product product, long categoryId) throws ResourceNotFoundException;
 
     Page<Product> searchByCategory(long categoryId,int pageNumber,int pageSize) throws ResourceNotFoundException;
