@@ -4,6 +4,7 @@ import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Projections.ProductWithIdAndproductName;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p.id as id,p.productName as productName FROM Product p")
     List<ProductWithIdAndproductName>  findIdAndproductName();
 
+    Page<Product> findByProductNameLikeIgnoreCase(String keyword, Pageable pageable);
 }

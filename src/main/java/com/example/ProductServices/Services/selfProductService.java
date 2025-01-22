@@ -134,4 +134,13 @@ public class selfProductService implements ProductService {
         return productRepository.findByCategory(category,PageRequest.of(pageNumber,pageSize,Sort.by("price")));
 
     }
+
+    @Override
+    public Page<Product> searchProductByKeyword(String keyword, int pageNumber, int pageSize) {
+         Page<Product> products = productRepository.findByProductNameLikeIgnoreCase('%'+keyword+'%',PageRequest.of(pageNumber,pageSize,Sort.by("price")));
+         if(products.isEmpty()) {
+             throw new ProductNotFoundException("Products with the provided keyword does not exist");
+         }
+         return products;
+    }
 }

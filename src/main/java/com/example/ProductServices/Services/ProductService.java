@@ -16,4 +16,6 @@ public interface ProductService {
     Product addProduct(Product product, long categoryId) throws ResourceNotFoundException;
 
     Page<Product> searchByCategory(long categoryId,int pageNumber,int pageSize) throws ResourceNotFoundException;
+
+    Page<Product> searchProductByKeyword(String keyword, int pageNumber, int pageSize);
 }

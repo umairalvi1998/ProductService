@@ -116,4 +116,24 @@ This object encapsulates both the Product object returned by productService.getS
 
           return new ResponseEntity<>(response, HttpStatus.OK);
       }
+
+      @GetMapping("/keyword/{keyword}")
+    public ResponseEntity<ProductResponse> getProductsByKeyword(@PathVariable String keyword,@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
+          Page<Product> productPages = productService.searchProductByKeyword(keyword,pageNumber,pageSize);
+
+          List<ProductDto> productDtos = new ArrayList<>();
+
+          productPages.stream().map(product -> modelMapper.map(product, ProductDto.class)).forEach(productDtos::add);
+
+          ProductResponse response = new ProductResponse();
+
+          response.setContent(productDtos);
+          response.setPageNumber(productPages.getNumber());
+          response.setPageSize(productPages.getSize());
+          response.setLastPage(productPages.isLast());
+          response.setTotalPages(productPages.getTotalPages());
+          response.setTotalElements(productPages.getTotalElements());
+
+          return new ResponseEntity<>(response, HttpStatus.FOUND);
+      }
 }
