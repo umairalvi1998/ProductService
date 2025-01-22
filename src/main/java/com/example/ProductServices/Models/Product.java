@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Product extends BaseModel {
-    private String title;
+    private String productName;
     private String image;
     @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JsonBackReference

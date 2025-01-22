@@ -9,7 +9,6 @@ import com.example.ProductServices.Repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +51,8 @@ public class selfProductService implements ProductService {
        }
       Product productInDb = prod.get();
 
-       if(product.getTitle() != null) {
-           productInDb.setTitle(product.getTitle());
+       if(product.getProductName() != null) {
+           productInDb.setProductName(product.getProductName());
        }
        if(product.getPrice() != null )
        {
@@ -82,8 +81,8 @@ public class selfProductService implements ProductService {
 
         Product productInDb = prod.get();
 
-        if(product.getTitle() != null) {
-            productInDb.setTitle(product.getTitle());
+        if(product.getProductName() != null) {
+            productInDb.setProductName(product.getProductName());
         }
         if(product.getPrice() != null )
         {
@@ -127,5 +126,12 @@ public class selfProductService implements ProductService {
         product.setSpecialPrice(specialPrice);
 
         return productRepository.save(product);
+    }
+
+    @Override
+    public Page<Product> searchByCategory(long categoryId,int pageNumber,int pageSize) throws ResourceNotFoundException {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category","CategoryId",categoryId));
+        return productRepository.findByCategory(category,PageRequest.of(pageNumber,pageSize,Sort.by("price")));
+
     }
 }

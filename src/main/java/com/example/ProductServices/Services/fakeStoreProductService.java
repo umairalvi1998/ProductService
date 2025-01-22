@@ -57,7 +57,7 @@ public class fakeStoreProductService implements ProductService {
        //to avoid code duplication.
        Product product = new Product();
 
-        product.setTitle(DTOobj.getTitle());
+        product.setProductName(DTOobj.getTitle());
         product.setPrice(DTOobj.getPrice());
         product.setId(DTOobj.getId());
 
@@ -111,7 +111,7 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
         */
        fakeStoreProductDTO prod = new fakeStoreProductDTO();
        prod.setId(product.getId());
-       prod.setTitle(product.getTitle());
+       prod.setTitle(product.getProductName());
        prod.setPrice(product.getPrice());
        prod.setCategory(product.getCategory().getName());
        prod.setDescription(product.getCategory().getDescription());
@@ -149,7 +149,7 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
         */
         fakeStoreProductDTO prod = new fakeStoreProductDTO();
         prod.setId(product.getId());
-        prod.setTitle(product.getTitle());
+        prod.setTitle(product.getProductName());
         prod.setPrice(product.getPrice());
         prod.setCategory(product.getCategory().getName());
         prod.setDescription(product.getCategory().getDescription());

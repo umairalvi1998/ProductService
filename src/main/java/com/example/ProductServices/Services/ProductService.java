@@ -15,4 +15,5 @@ public interface ProductService {
     Product deleteProduct(Long id);
     Product addProduct(Product product, long categoryId) throws ResourceNotFoundException;
 
+    Page<Product> searchByCategory(long categoryId,int pageNumber,int pageSize) throws ResourceNotFoundException;
 }

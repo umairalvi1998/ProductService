@@ -1,13 +1,12 @@
 package com.example.ProductServices.Repository;
 
+import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
-import com.example.ProductServices.Projections.ProductWithIdAndTitle;
+import com.example.ProductServices.Projections.ProductWithIdAndproductName;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,12 +19,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     
     Page<Product> findAll(Pageable pageable);
 
+    Page<Product> findByCategory(Category category, Pageable pageable);
+
     @Override
     void deleteById(Long aLong);
 
     Product save(Product product);
 
-    @Query("SELECT p.id as id,p.title as title FROM Product p")
-    List<ProductWithIdAndTitle>  findIdAndTitle();
+    @Query("SELECT p.id as id,p.productName as productName FROM Product p")
+    List<ProductWithIdAndproductName>  findIdAndproductName();
 
 }

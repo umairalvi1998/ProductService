@@ -1,6 +1,7 @@
 package com.example.ProductServices.Controllers;
 
 import com.example.ProductServices.DTO.ProductDto;
+import com.example.ProductServices.DTO.ProductResponse;
 import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Services.ProductService;
@@ -52,13 +53,22 @@ This object encapsulates both the Product object returned by productService.getS
       }
 
       @GetMapping() //we want the ApI to be like /products hence no parameters
-      public List<Product> getAllProducts(@RequestParam("pageNumber") int pageNumber,@RequestParam("pageSize") int pageSize) {
-            Page<Product> productPages =productService.getAllProducts(pageNumber,pageSize);
-              List<Product> products = new ArrayList<>();
-              for (Product product : productPages) {
-                    products.add(product);
-              }
-              return products;
+      public ResponseEntity<ProductResponse> getAllProducts(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
+            Page<Product> productPages = productService.getAllProducts(pageNumber,pageSize);
+              List<ProductDto> productDtos = new ArrayList<>();
+
+              productPages.stream().map(product -> modelMapper.map(product, ProductDto.class)).forEach(productDtos::add);
+
+              ProductResponse response = new ProductResponse();
+
+              response.setContent(productDtos);
+              response.setPageNumber(productPages.getNumber());
+              response.setPageSize(productPages.getSize());
+              response.setLastPage(productPages.isLast());
+              response.setTotalPages(productPages.getTotalPages());
+              response.setTotalElements(productPages.getTotalElements());
+
+              return new ResponseEntity<>(response, HttpStatus.OK);
       }
 
 
@@ -66,6 +76,7 @@ This object encapsulates both the Product object returned by productService.getS
       public Product  delteteProduct(@PathVariable("id") Long id) {
              return  productService.deleteProduct(id);
       }
+
       @PutMapping("/{id}")
       public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product) {
             return  productService.replaceProduct(id,product);
@@ -84,5 +95,25 @@ This object encapsulates both the Product object returned by productService.getS
             ProductDto productDto = modelMapper.map(prod,ProductDto.class);
 
             return new ResponseEntity<>(productDto,HttpStatus.CREATED);
+      }
+
+      @GetMapping("/categories/{categoryId}")
+      public ResponseEntity<ProductResponse> getProductsByCategory(@PathVariable("categoryId") long categoryId,@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) throws ResourceNotFoundException {
+          Page<Product> productPages = productService.searchByCategory(categoryId,pageNumber,pageSize);
+
+          List<ProductDto> productDtos = new ArrayList<>();
+
+          productPages.stream().map(product -> modelMapper.map(product, ProductDto.class)).forEach(productDtos::add);
+
+          ProductResponse response = new ProductResponse();
+
+          response.setContent(productDtos);
+          response.setPageNumber(productPages.getNumber());
+          response.setPageSize(productPages.getSize());
+          response.setLastPage(productPages.isLast());
+          response.setTotalPages(productPages.getTotalPages());
+          response.setTotalElements(productPages.getTotalElements());
+
+          return new ResponseEntity<>(response, HttpStatus.OK);
       }
 }
