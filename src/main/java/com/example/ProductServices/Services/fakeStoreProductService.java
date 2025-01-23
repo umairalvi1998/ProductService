@@ -169,11 +169,21 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
         if(response == null) {
             throw new ProductNotFoundException("Product not found with ID "+id);
         }
-        return convertFakeStoreProductDto(response);
+        convertFakeStoreProductDto(response);
    }
 
     @Override
     public Product addProduct(Product product, long categoryId) throws ResourceNotFoundException {
+        return null;
+    }
+
+    @Override
+    public Page<Product> searchByCategory(long categoryId, int pageNumber, int pageSize) throws ResourceNotFoundException {
+        return null;
+    }
+
+    @Override
+    public Page<Product> searchProductByKeyword(String keyword, int pageNumber, int pageSize) {
         return null;
     }
 

@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class CategoryRequestDto {
-    private Long categoryId;
     private String categoryName;
+    private String description;
 }

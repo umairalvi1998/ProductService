@@ -6,6 +6,7 @@ import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Repository.CategoryRepository;
 import com.example.ProductServices.Repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,6 +77,9 @@ public class selfProductService implements ProductService {
                categoryRepository.save(newCategory);
                productInDb.setCategory(newCategory);
            }
+           else {
+               productInDb.setCategory(cat.get());
+           }
 
        }
        return productRepository.save(productInDb);
@@ -106,12 +110,16 @@ public class selfProductService implements ProductService {
                 categoryRepository.save(newCategory);
                 productInDb.setCategory(newCategory);
             }
+            else {
+                productInDb.setCategory(cat.get());
+            }
 
         }
         return productRepository.save(productInDb);
 
     }
 
+    @Transactional
     @Override
     public void deleteProduct(Long id) {
         int rowsAffected = productRepository.deleteProductById(id);
