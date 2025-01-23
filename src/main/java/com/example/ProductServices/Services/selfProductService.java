@@ -1,29 +1,43 @@
 package com.example.ProductServices.Services;
 
+import com.example.ProductServices.DTO.ProductDto;
 import com.example.ProductServices.Exceptions.ProductNotFoundException;
 import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Models.Category;
 import com.example.ProductServices.Models.Product;
 import com.example.ProductServices.Repository.CategoryRepository;
 import com.example.ProductServices.Repository.ProductRepository;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service("selfProductService")
 public class selfProductService implements ProductService {
      private ProductRepository productRepository;
      private CategoryRepository categoryRepository;
      private ModelMapper modelMapper;
+     private FileService fileService;
+     @Value("${project.image}")
+     private String path;
 
-     public selfProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
+     public selfProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ModelMapper modelMapper, FileService fileService) {
          this.productRepository = productRepository;
          this.categoryRepository = categoryRepository;
-            this.modelMapper = modelMapper;
+         this.modelMapper = modelMapper;
+         this.fileService = fileService;
      }
     @Override
     public Product getSingleProduct(long productId) {
@@ -122,7 +136,7 @@ public class selfProductService implements ProductService {
     }
 
     @Override
-    public Product addProduct(Product product,long categoryId) throws ResourceNotFoundException {
+    public Product addProduct(@Valid  Product product, long categoryId) throws ResourceNotFoundException {
 //         Category category = product.getCategory();
 
 //         if(category.getId()==null) {
@@ -156,4 +170,27 @@ public class selfProductService implements ProductService {
          }
          return products;
     }
+
+    @Override
+    public ProductDto updateProductImage(long productId, MultipartFile image) throws IOException {
+         //Get the product from Db
+        Product productFromDb = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        //upload the image to the server
+        //get the filename of the uploaded image
+
+        String fileName = fileService.uploadImage(path,image);
+        //updating the new filename to the product
+        productFromDb.setImage(fileName);
+
+        //save updated Product
+        Product updatedProduct = productRepository.save(productFromDb);
+
+        //return the productDto
+       return modelMapper.map(updatedProduct,ProductDto.class);
+
+
+    }
+
+
 }
