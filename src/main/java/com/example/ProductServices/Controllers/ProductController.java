@@ -1,5 +1,6 @@
 package com.example.ProductServices.Controllers;
 
+import com.example.ProductServices.Configurations.AppConstants;
 import com.example.ProductServices.DTO.ProductDto;
 import com.example.ProductServices.DTO.ProductResponse;
 import com.example.ProductServices.Exceptions.ResourceNotFoundException;
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +56,7 @@ This object encapsulates both the Product object returned by productService.getS
       }
 
       @GetMapping() //we want the ApI to be like /products hence no parameters
-      public ResponseEntity<ProductResponse> getAllProducts(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
+      public ResponseEntity<ProductResponse> getAllProducts(@RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER) int pageNumber, @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE) int pageSize) {
             Page<Product> productPages = productService.getAllProducts(pageNumber,pageSize);
               List<ProductDto> productDtos = new ArrayList<>();
 
@@ -137,5 +140,11 @@ This object encapsulates both the Product object returned by productService.getS
           response.setTotalElements(productPages.getTotalElements());
 
           return new ResponseEntity<>(response, HttpStatus.FOUND);
+      }
+
+      @PutMapping("/{productId}/image")
+      public ResponseEntity<ProductDto> uploadProductImage(@PathVariable long productId, @RequestParam("image")MultipartFile image) throws IOException {
+                ProductDto updatedProduct = productService.updateProductImage(productId,image);
+                return new ResponseEntity<>(updatedProduct,HttpStatus.OK);
       }
 }
