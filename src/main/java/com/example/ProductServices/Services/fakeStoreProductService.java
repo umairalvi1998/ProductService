@@ -1,5 +1,6 @@
 package com.example.ProductServices.Services;
 
+import com.example.ProductServices.DTO.ProductDto;
 import com.example.ProductServices.DTO.fakeStoreProductDTO;
 import com.example.ProductServices.Exceptions.ProductNotFoundException;
 import com.example.ProductServices.Exceptions.ResourceNotFoundException;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,6 +187,11 @@ In your case, by specifying fakeStoreProductDTO[].class, you're indicating to Re
 
     @Override
     public Page<Product> searchProductByKeyword(String keyword, int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public ProductDto updateProductImage(long productId, MultipartFile image) throws IOException {
         return null;
     }
 
