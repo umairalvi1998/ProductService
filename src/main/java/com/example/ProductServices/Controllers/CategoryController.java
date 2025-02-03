@@ -1,8 +1,10 @@
 package com.example.ProductServices.Controllers;
 
+import com.example.ProductServices.Commons.AuthenticationCommons;
 import com.example.ProductServices.Configurations.AppConstants;
 import com.example.ProductServices.DTO.CategoryRequestDto;
 import com.example.ProductServices.DTO.CategoryResponseDto;
+import com.example.ProductServices.DTO.UserDto;
 import com.example.ProductServices.Exceptions.APIException;
 import com.example.ProductServices.Exceptions.ResourceNotFoundException;
 import com.example.ProductServices.Services.CategoryService;
@@ -19,6 +21,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private AuthenticationCommons authCommons;
+
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponseDto> getAllCategories(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -29,8 +34,16 @@ public class CategoryController {
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/public/categories")
-    public ResponseEntity<CategoryRequestDto> createCategory(@Valid @RequestBody CategoryRequestDto categoryDTO) throws APIException {
+    @PostMapping("/public/categories/{token}")
+    public ResponseEntity<CategoryRequestDto> createCategory(@Valid @RequestBody CategoryRequestDto categoryDTO,@PathVariable String token) throws APIException {
+        //validate token using the UserService
+        UserDto userDto = null;
+        try {
+            userDto = authCommons.validateToken(token);
+        } catch (APIException e) {
+            throw new APIException("Invalid Token");
+        }
+
         CategoryRequestDto savedCategoryDTO = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(savedCategoryDTO, HttpStatus.CREATED);
     }
