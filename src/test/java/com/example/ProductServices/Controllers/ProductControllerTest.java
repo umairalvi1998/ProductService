@@ -111,7 +111,7 @@ class ProductControllerTest {
         Product inputProduct = new Product();
 
         when(productService.addProduct(inputProduct, invalidCategoryId))
-                .thenThrow(new ResourceNotFoundException("Category not found"));
+                .thenThrow(new ResourceNotFoundException("Category","Id","CategoryId"));
 
         // Act & Assert
         try {
