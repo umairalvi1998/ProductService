@@ -1,5 +1,6 @@
 package com.example.ProductServices.Configurations;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -15,6 +16,7 @@ public class RestTemplateConfig {
     @Bean //because of this annotation only one object will be created of the RestTemplate
     //@Bean is an annotation used within classes annotated with @Configuration to indicate that a method produces a bean to be managed by the Spring container.
     // This method returns an object that Spring should register as a bean in the application context.
+    @LoadBalanced
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
