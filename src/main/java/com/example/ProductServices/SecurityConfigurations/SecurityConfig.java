@@ -86,7 +86,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withJwkSetUri("http://USERSERVICE/.well-known/jwks.json")
+        return NimbusJwtDecoder.withJwkSetUri("http://USER-SERVICE/.well-known/jwks.json")
                 .restOperations(restTemplate())
                 .build();
     }

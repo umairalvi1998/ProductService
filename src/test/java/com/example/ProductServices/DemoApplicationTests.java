@@ -9,25 +9,25 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
-@SpringBootTest()
-@ContextConfiguration(classes = DemoApplication.class)
-class DemoApplicationTests {
-//      @Autowired
-//      ProductRepository productRepository;
+//@SpringBootTest()
+//@ContextConfiguration(classes = DemoApplication.class)
+//class DemoApplicationTests {
+////      @Autowired
+////      ProductRepository productRepository;
+////
+//////     //public DemoApplicationTests(ProductRepository productRepository) {
+//////         this.productRepository = productRepository;
+//////     }
+////    @Test
+////    void contextLoads() {
+////    }
+////   @Test
+////    void TestDBQueries() {
+////         List<ProductWithIdAndTitle>  productWithIdAndTitles = productRepository.findIdAndTitle();
+////
+////         for (ProductWithIdAndTitle productWithIdAndTitle : productWithIdAndTitles) {
+////             System.out.println(productWithIdAndTitle.getid() + " " + productWithIdAndTitle.gettitle());
+////         }
+////    }
 //
-////     //public DemoApplicationTests(ProductRepository productRepository) {
-////         this.productRepository = productRepository;
-////     }
-//    @Test
-//    void contextLoads() {
-//    }
-//   @Test
-//    void TestDBQueries() {
-//         List<ProductWithIdAndTitle>  productWithIdAndTitles = productRepository.findIdAndTitle();
-//
-//         for (ProductWithIdAndTitle productWithIdAndTitle : productWithIdAndTitles) {
-//             System.out.println(productWithIdAndTitle.getid() + " " + productWithIdAndTitle.gettitle());
-//         }
-//    }
-
-}
+//}
